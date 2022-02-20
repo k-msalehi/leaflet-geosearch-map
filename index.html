@@ -97,11 +97,12 @@
       // show the scale bar on the lower left corner
       L.control.scale({ imperial: true, metric: true }).addTo(map);
       var greenIcon = L.icon({
-         iconUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon.png',//25x41
+         iconUrl: 'https://res.cloudinary.com/dlsw1zmae/image/upload/v1645352521/etebarkala/vectorpaint_kjgyxp.svg',//25x41
          shadowUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-shadow.png', //41x41
-         iconSize: [25, 41], // size of the icon
-         shadowSize: [41, 41], // size of the shadow
+         iconSize: [36, 41], // size of the icon
+         shadowSize: [44, 44], // size of the shadow
          iconAnchor: [28, 40], // google map
+         shadowAnchor: [23, 46], // google map
       });
       var marker = L.marker([35.711395371053676, 51.406831741333015], {
          draggable: false,
