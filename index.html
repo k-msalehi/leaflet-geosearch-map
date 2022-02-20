@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+   <meta charset="UTF-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <link rel="stylesheet" href="./assets/css/leaflet.css" />
+   <link rel="stylesheet" href="./assets/css/geosearch.css" />
+   <title>Document</title>
+   <style>
+      #map {
+         height: 380px;
+      }
+
+      .results.active,
+      .leaflet-bar-notfound {
+         direction: rtl;
+      }
+
+      .glass {
+         direction: rtl;
+         height: 30px !important;
+         padding-right: 20px !important;
+      }
+
+      .leaflet-left {
+         right: 0;
+      }
+
+      .leaflet-top.leaflet-left {
+         width: 100%;
+      }
+
+      .geosearch.leaflet-bar.leaflet-control.leaflet-control-geosearch.leaflet-geosearch-button {
+         position: absolute;
+         left: unset;
+         top: 9px;
+         margin-top: 0;
+         right: 7px;
+      }
+
+      .leaflet-control-geosearch form {
+         right: 36px;
+         left: unset;
+      }
+
+      .geosearch form {
+         border-radius: 6px;
+      }
+
+      .leaflet-control-geosearch a.leaflet-bar-part::after {
+         top: 8px;
+         left: 12px;
+         height: 8px;
+         width: 8px;
+         border-radius: 50%;
+         border: 2px solid #555;
+      }
+
+      .leaflet-control-geosearch a.leaflet-bar-part::before {
+         top: 15px;
+         left: 17px;
+         width: 6px;
+         border-top: 2px solid #555;
+         transform: rotateZ(45deg);
+      }
+
+      .leaflet-geosearch-button.active .leaflet-bar-part {
+         border-radius: 0 6px 6px 0;
+         border-bottom-right-radius: 0px;
+         border-bottom-left-radius: 4px;
+         width: 36px;
+      }
+
+      .leaflet-touch .leaflet-bar a:last-child {
+         border-bottom-left-radius: 0;
+         border-bottom-right-radius: 0;
+      }
+   </style>
+</head>
+
+<body>
+   <div id="map"></div>
+   <script src="./assets/js/leaflet.js"></script>
+   <script src="./assets/js/geosearch.umd.js"></script>
+   <script>
+      // initialize Leaflet
+      var map = L.map('map').setView({ lon: 51.406831741333015, lat: 35.711395371053676 }, 19);
+
+      // add the OpenStreetMap tiles
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+         maxZoom: 19,
+         attribution: '&copy; <a href="https://openstreetmap.org/copyright">OpenStreetMap contributors</a>'
+      }).addTo(map);
+
+      // show the scale bar on the lower left corner
+      L.control.scale({ imperial: true, metric: true }).addTo(map);
+      var greenIcon = L.icon({
+         iconUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon.png',//25x41
+         shadowUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-shadow.png', //41x41
+         iconSize: [25, 41], // size of the icon
+         shadowSize: [41, 41], // size of the shadow
+         iconAnchor: [28, 40], // google map
+      });
+      var marker = L.marker([35.711395371053676, 51.406831741333015], {
+         draggable: false,
+         autoPan: true,
+         icon: greenIcon
+      }).addTo(map);
+      var provider = new GeoSearch.OpenStreetMapProvider({
+         params: {
+            'accept-language': 'fa', // render results in Dutch
+            //   'countrycodes': 'ir', // limit search results to the Netherlands
+            'addressdetails': 0, // include additional address detail parts
+            'viewbox': [51.19216918945313, 35.58529318061384, 51.59797668457031, 35.812801904716636],
+            'bounded': 1,
+         },
+      });
+      const search = new GeoSearch.SearchControl({
+         provider,
+         showMarker: false,
+         notFoundMessage: 'نتیجه ای یافت نشد!',
+         searchLabel: 'جستجو...',
+         'resultFormat': function (t) {
+            var label = (t.result.label).split(',');
+            return label[0] + '، ' + label[1]
+         },
+         autoClose: true,
+
+      });
+      map.addControl(search);
+
+      map.on("move", function () {
+         marker.setLatLng(map.getCenter())
+      })
+      map.on("moveend", function () {
+         var curPos = marker.getLatLng();
+         console.log('https://www.google.com/maps/?q=' + (curPos.lat) + ',' + (curPos.lng));
+      })
+   </script>
+</body>
+
+</html>
