@@ -86,7 +86,7 @@
    <script src="./assets/js/geosearch.umd.js"></script>
    <script>
       // initialize Leaflet
-      var map = L.map('map').setView({ lon: 51.406831741333015, lat: 35.711395371053676 }, 19);
+      var map = L.map('map').setView({ lon: 51.406831741333015, lat: 35.711395371053676 }, 14);
 
       // add the OpenStreetMap tiles
       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -96,15 +96,15 @@
 
       // show the scale bar on the lower left corner
       L.control.scale({ imperial: true, metric: true }).addTo(map);
-      var greenIcon = L.icon({
+      var customMarker = L.icon({
          iconUrl: 'https://res.cloudinary.com/dlsw1zmae/image/upload/v1643185707/etebarkala/download_wdnib1.svg',//25x41
          iconSize: [25, 41], // size of the icon
-         iconAnchor: [28, 40], // google map
+         iconAnchor: [23, 38], // google map
       });
       var marker = L.marker([35.711395371053676, 51.406831741333015], {
          draggable: false,
          autoPan: true,
-         icon: greenIcon
+         icon: customMarker
       }).addTo(map);
       var provider = new GeoSearch.OpenStreetMapProvider({
          params: {
